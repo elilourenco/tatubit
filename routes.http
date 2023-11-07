@@ -1,2 +1,11 @@
+POST  http://localhost:3000/cadastro
 
-POST http://localhost:3000/signup
+Content-Type:application/json
+
+
+{
+    "name":"sandra mateus",
+    "email":"sandram@gmail.com",
+    "password":"sandr123a",
+
+}

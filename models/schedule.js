@@ -2,6 +2,8 @@
 const {
   Model, Sequelize
 } = require('sequelize');
+
+
 module.exports = (sequelize, DataTypes) => {
   class schedule extends Model {
     /**
@@ -16,11 +18,11 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   schedule.init({
-    title: Sequelize.STRING,
-    description: Sequelize.STRING,
-    email: Sequelize.STRING,
-    address: Sequelize.STRING,
-    contact: Sequelize.STRING
+    title: Datatypes.STRING,
+    description: DataTypes.STRING,
+    email: DataTypes.STRING,
+    address: DataTypes.STRING,
+    contact: DataTypes.STRING
   }, {
     sequelize,
     modelName:'schedule',

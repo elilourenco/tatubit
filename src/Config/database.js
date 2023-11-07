@@ -5,8 +5,10 @@ module.exports={
     password: 'Scr_uu/pn42~kz@',
     database: 'my-app-express',
     define:{
-        timestamps: true,
-   },
+        timestamps:true,
+        underscored:true,
+    }
+    
 
 };
  
