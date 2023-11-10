@@ -1,8 +1,9 @@
 const express= require('express');
 const app =express();
 const port = 3000;
-const bodyParser= require('body-parser');
+const bodyParser= require ('body-parser');
 const Sequelize = require('sequelize');
+
 const { default: axios } = require('axios');
 const database= require('./src/database/index');
 
@@ -26,7 +27,7 @@ const sequelize = new Sequelize('my-app-express', 'root', 'Scr_uu/pn42~kz@', {
 //create table User
 const User= sequelize.define("User",{
   id:{
-    allowNull: false,
+    allowNull:false,
     autoIncrement: true,
     primaryKey:true,
     type:Sequelize.INTEGER
@@ -47,6 +48,7 @@ const User= sequelize.define("User",{
     notEmpty:true,
     
   },
+
 },{tableName:"User"});
 
 User.sync({force:true})
@@ -75,7 +77,7 @@ const Login= sequelize.define("Login",{
   }
 },{tableName:"Login"});
 
-Login.sync({force:true})
+Login.sync({force:true});
 
 
 //create table schedules
@@ -97,13 +99,20 @@ const Schedule= sequelize.define("Schedule",{
   type: Sequelize.STRING,
   unique:true,
 },
-  date:{type:Sequelize.DATE, notEmpty:true},
-  hours:{type:Sequelize.DATE, notEmpty:true},
-  cep:{type:Sequelize.INTEGER,
+  date:{
+    type:Sequelize.DATE,
+     notEmpty:true},
+  hours:{
+    type:Sequelize.DATE, 
+    notEmpty:true},
+  cep:{
+    type:Sequelize.INTEGER,
     notEmpty:true,
   },
   address:Sequelize.STRING,
+
   title:Sequelize.STRING,
+
   description:Sequelize.STRING,
 },{tableName:"Schedule"});
 
@@ -114,17 +123,16 @@ User.Schedule=User.hasMany(Schedule);
 
 // database autenticate
 
-
-
-database.authenticate().then(()=>
-console.log('database is connected')).catch(err =>console.log('Error'+ err))
+database.authenticate()
+.then(()=>
+console.log('database is connected'))
+.catch(err =>console.log('Error'+ err))
 
 //create de User
 
 app.get('/hello', (req, res)=>{
-  res.send('hello the new app')
-})
-
+  res.send('hello the new app');
+});
 
 app.post('/cadastro', async(req,res) =>{ 
 
@@ -141,12 +149,11 @@ app.post('/cadastro', async(req,res) =>{
   await user.save();
   res.send('the table is posted').status(200);
   console.log(user);
-  
 })
 
-app.get('/getallusers',async(req,res)=>{
-  const allusers= await User.findAll()
-  res.json(allusers)
+app.get('/getallusers',async( req,res)=>{
+  const allusers= await User.findAll();
+  res.json(allusers);
 })
 
 //create de login
@@ -161,7 +168,7 @@ app.post('/login', async(req,res) =>{
     password,
   });
 
-  await login.save()
+  await login.save();
   res.send('the login is created').status(200)
   console.log(login)
   
@@ -169,34 +176,32 @@ app.post('/login', async(req,res) =>{
 
 app.get('/getallsignin',async(req,res)=>{
   const allsignin= await Login.findAll()
-  res.json(allsignin)
+  res.json(allsignin);
 })
-
 
 //create the schedules
 
-app.post('/schedule', async(req,res) =>{ 
-
-  const userId= req.body.userId;
-  const email =req.body.email;
+app.post('/schedule',async(req,res) =>{ 
+  const userId=req.body.userId;
+  const email=req.body.email;
   const address=req.body.address;
-  const cep= req.body.cep;
-  const contact= req.body.contact;
-  const date= req.body.date;
-  const hours= req.body.hours;
+  const cep=req.body.cep;
+  const contact=req.body.contact;
+  const date=req.body.date;
+  const hours=req.body.hours;
   const title=req.body.title;
   const description=req.body.description;
 
-  const showcep = async(res,req) =>{
+  const showcep = async(req,res)=>{
     axios.get(`https://viacep.com.br/ws/${cep}/json/`).then((result)=>{
     const shh=result.data.localidade;
     console.log(shh)
     
-    }).catch(e => console.log(e))
+    }).catch(e=> console.log(e))
   }
   showcep();
 
-  const ssh= await showcep();
+  const ssh=await showcep();
 
     const schedule= Schedule.build({
       userId,
@@ -224,7 +229,7 @@ app.get('/getallsignup',async(req,res)=>{
 app.put('/schedule:id',async(res,req)=>{
   const email =req.body.email;
   const address=req.body.address;
-  const contact= req.body.contact;
+  const contact=req.body.contact;
   const date= req.body.date;
   const hours= req.body.hours;
   const title=req.body.title;
@@ -232,13 +237,13 @@ app.put('/schedule:id',async(res,req)=>{
 
   Schedule.update(
   {
-      email:email,
-      address:address,
-      contact:contact,
-      date:date,
-      hours:hours,
-      title:title,
-      description:description,
+    email:email,
+    address:address,
+    contact:contact,
+    date:date,
+    hours:hours,
+    title:title,
+    description:description,
   },
   {
     where:{
@@ -259,8 +264,7 @@ app.delete('/schedule:id',async(res,req)=>{
       hora:hora,
       title:title,
       description:description,
-
-  },
+    },
   {
     where:{
       id:req.params.id,
@@ -269,8 +273,7 @@ app.delete('/schedule:id',async(res,req)=>{
   res.redirect('/schedule')
 })
 
-                                                                                                                                                                                                                                                                                                                                                                                                                            
-
+                                                                                                                                                                                                                                                                                                                                                                                                                          
 app.listen(port, ()=> {
   console.log(` app listening on port ${port}`)
 })
