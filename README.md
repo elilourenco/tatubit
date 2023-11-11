@@ -1,1 +1,3 @@
 # tatubit
+
+npm install sequelize
